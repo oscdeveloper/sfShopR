@@ -20,8 +20,6 @@ class BasketController extends Controller
         $basket = $session->get('basket', array());
         $products = $this->getProducts();
 
-        dump($basket);
-
         $productsInBasket = array();
         foreach ($basket as $id => $b) {
             $productsInBasket[] = $products[$id];
@@ -29,7 +27,7 @@ class BasketController extends Controller
 
         return array(
             'products_in_basket' => $productsInBasket,
-            );
+        );
     }
 
     /**
