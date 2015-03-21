@@ -48,14 +48,30 @@ class BasketController extends Controller
     }
 
     /**
-     * @Route("/koszyk/{id}/usun")
-     * @Template()
+     * @Route("/koszyk/{id}/usun", name="basket_remove")
      */
     public function removeAction($id)
     {
-        return array(
-                // ...
-            );
+        $session = $this->get('session');
+        
+        $basket = $session->get('basket', array());
+        
+        if (!array_key_exists($id, $basket)) {
+            $this->addFlash('notice', 'Produkt nie istnieje');
+            
+            return $this->redirectToRoute('basket');
+        }
+        
+        unset($basket[$id]);
+
+        $session->set('basket', $basket);
+        $product = $this->getProduct($id);
+
+        //$this->addFlash('notice', 'Produkt ' . $product['name'] . ' został usunięty z koszyka');
+
+        $this->addFlash('notice', sprintf('Product %s został usunięty z koszyka', $product['name']));
+        
+        return $this->redirectToRoute('basket');
     }
 
     /**
@@ -106,6 +122,13 @@ class BasketController extends Controller
         }
 
         return $products;
+    }
+
+    private function getProduct($id)
+    {
+        $products = $this->getProducts();
+
+        return $products[$id];
     }
 
 }

@@ -12,7 +12,7 @@ class ProductsController extends Controller
      */
     public function indexAction()
     {
-
+        
 
         return $this->render('products/index.html.twig', [
             'products' => $this->getProducts(),
