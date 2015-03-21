@@ -26,6 +26,10 @@
                         <a href="{{ path('basket_remove', { 'id': product.id }) }}" class="btn btn-danger">usuń</a>
                     </td>
                 </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Koszyk jest pusty</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
