@@ -20,14 +20,14 @@ class ProductsController extends Controller
             ->getProductsQuery($category);
         
         $paginator = $this->get('knp_paginator');
-        $products = $paginator->paginate(
+        $pagination = $paginator->paginate(
             $getProductsQuery,
             $request->query->get('page', 1),
             8
         );
 
         return $this->render('products/index.html.twig', [
-            'products' => $products,
+            'products' => $pagination,
         ]);
     }
 
