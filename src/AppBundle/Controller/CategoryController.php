@@ -12,9 +12,19 @@ class CategoryController extends Controller
      */
     public function listAction()
     {
-        $categories = $this->getDoctrine()
-            ->getRepository('AppBundle:Category')
-            ->findAll();
+        $qb = $this
+            ->getDoctrine()
+            ->getManager()
+            ->createQueryBuilder();
+
+        $qb
+            ->select('c, p')
+            ->from('AppBundle:Category', 'c')
+            ->leftJoin('c.products', 'p');
+
+        $categories = $qb
+            ->getQuery()
+            ->getResult();
 
         return $this->render('Category/list.html.twig', [
             'categories' => $categories,
