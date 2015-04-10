@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Product;
+use AppBundle\Form\BasketForm;
 
 class BasketController extends Controller
 {
@@ -17,8 +18,18 @@ class BasketController extends Controller
      */
     public function indexAction(Request $request)
     {
+//        $products = $this->get('basket')->getProducts();
+//
+//        $form = $this->createForm(new BasketForm());
+//        $form->handleRequest($request);
+//
+//        if ($form->isSubmitted() && $form->isValid()) {
+//
+//        }
+        
         return array(
             'basket' => $this->get('basket'),
+            //'form' => $form->createView(),
         );
     }
 
@@ -67,6 +78,10 @@ class BasketController extends Controller
      */
     public function updateAction($id, $quantity)
     {
+
+
+
+
         return array(
                 // ...
             );
