@@ -52,7 +52,7 @@ class ProductsController extends Controller
             $em->persist($comment);
             $em->flush();
             
-            $this->addFlash('notice', "Komentarz został pomyślnie zapisany.");
+            $this->addFlash('notice', "Komentarz został pomyślnie zapisany i oczekuje na weryfikacje");
             
             return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
         }
