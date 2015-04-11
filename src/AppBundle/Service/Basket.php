@@ -1,15 +1,14 @@
-<?php
+<?php namespace AppBundle\Service;
 
-namespace AppBundle\Service;
-
-use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Description of Basket
  */
 class Basket
 {
+
     private $session;
 
     public function __construct(Session $session)
@@ -24,15 +23,19 @@ class Basket
 
     public function add(Product $product, $quantity = 1)
     {
+        if ($product->getAmount() <= 0) {
+            throw new \Exception("Produkt, który próbujesz dodać jest już niedostępny!");
+        }
+
         $products = $this->getProducts();
 
         if (!array_key_exists($product->getId(), $products)) {
 
             $products[$product->getId()] = array(
-                'id'        => $product->getId(),
-                'name'      => $product->getName(),
-                'price'     => $product->getPrice(),
-                'quantity'  => 0
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'price' => $product->getPrice(),
+                'quantity' => 0
             );
         }
 
@@ -50,7 +53,7 @@ class Basket
         $products = $this->getProducts();
 
         if (!array_key_exists($product->getId(), $products)) {
-            throw new \Exception(sprintf('Produkt "%s" nie znajduje się w Twoim koszyku', $product->getName()));
+            throw new Exception(sprintf('Produkt "%s" nie znajduje się w Twoim koszyku', $product->getName()));
         }
 
         unset($products[$product->getId()]);
@@ -66,5 +69,25 @@ class Basket
         // $this->session->set('basket', array());
 
         return $this;
+    }
+
+    public function getPrice()
+    {
+        $price = 0;
+        foreach ($this->getProducts() as $product) {
+            $price += $product['price'] * $product['quantity'];
+        }
+
+        return $price;
+    }
+
+    public function getQuantity()
+    {
+        $quntity = 0;
+        foreach ($this->getProducts() as $product) {
+            $quntity += $product['quantity'];
+        }
+
+        return $quntity;
     }
 }
