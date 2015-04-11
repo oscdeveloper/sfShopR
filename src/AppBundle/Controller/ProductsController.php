@@ -41,17 +41,15 @@ class ProductsController extends Controller
             'product'   => $product
         ]);
     }
-
+    
     /**
-     * @Route("/produkty/dodaj", name="products_add")
+     * @Route("/szukaj", name="product_search")
      */
-    public function addAction(Request $request)
+    public function searchAction()
     {
-        $form = $this->createForm(new ProductType());
-        $form->handleRequest($request);
-
-        return $this->render('products/add.html.twig', [
-            'form' => $form->createView(),
+        
+        return $this->render('products/search.html.twig', [
+            
         ]);
     }
 

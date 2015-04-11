@@ -40,7 +40,7 @@ class BasketController extends Controller
     {
         if (is_null($product)) {
             $this->addFlash('error', 'Produkt, który próbujesz dodać nie został znaleziony!');
-            return $this->redirectToRoute('products_list');
+            return $this->redirect($request->headers->get('referer'));
         }
         
         try {
