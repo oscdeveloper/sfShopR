@@ -35,13 +35,34 @@
                 {{ form_errors(form.content) }}
                 {{ form_widget(form.content) }}
             #}
-            
+
         </div>
-        
+
         {{ form_rest(form) }}
 
         <input class="btn btn-success" type="submit" value="Dodaj komentarz" />
 
     </form>
+
+    <br />
+    
+    {% for comment in product.comments %}
+
+        <div class="row">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p>{{ comment.content }}</p>
+                    <small>Dodany {{ comment.createdAt|date('d-m-Y') }}</small>
+                </div>
+            </div>
+
+        </div>
+    
+    {% else %}
+        
+        <p> Nie ma jeszcze żadnych komentarzy. Dodaj swój jako pierwszy!</p>
+
+    {% endfor %}
 
 {% endblock %}
