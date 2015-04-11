@@ -8,18 +8,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CommentType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content')
-            ->add('createdAt')
-            ->add('nbVoteUp')
-            ->add('nbVoteDown')
-            ->add('verified')
+            ->add('content', 'textarea', array(
+                'label' => "Treść komentarza",
+                'attr'  => array(
+                    'class' => 'form-control', 
+                    'placeholder' => "Wprowadź treść komentarza"
+                )
+            ))
         ;
     }
     

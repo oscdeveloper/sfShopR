@@ -3,7 +3,7 @@
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block body %}
-    
+
     <div class="thumbnail clearfix">
         <img src="http://placehold.it/240x200" alt="" class="img-thumbnail">
         <div class="caption">
@@ -22,5 +22,26 @@
             </div>
         </div>
     </div>
-    
+
+    <h2> Komentarze</h2>
+
+    <form method="post" novalidate>
+
+        <div class="form-group">
+            {{ form_row(form.content) }}
+
+            {#
+                {{ form_label(form.content) }}
+                {{ form_errors(form.content) }}
+                {{ form_widget(form.content) }}
+            #}
+            
+        </div>
+        
+        {{ form_rest(form) }}
+
+        <input class="btn btn-success" type="submit" value="Dodaj komentarz" />
+
+    </form>
+
 {% endblock %}

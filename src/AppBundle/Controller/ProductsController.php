@@ -3,11 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Comment;
 use AppBundle\Entity\Product;
+use AppBundle\Form\CommentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProductsController extends Controller
 {
@@ -37,8 +38,14 @@ class ProductsController extends Controller
      */
     public function showAction(Product $product)
     {
+        $comment = new Comment();
+        $comment->setProduct($product);
+        
+        $form = $this->createForm(new CommentType(), $comment);
+        
         return $this->render('products/show.html.twig', [
-            'product'   => $product
+            'product'   => $product,
+            'form'      => $form->createView()
         ]);
     }
     
