@@ -18,18 +18,15 @@ class BasketController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $products = $this->get('basket')->getProducts();
-//
-//        $form = $this->createForm(new BasketForm());
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//
-//        }
+        $basket = $this->get('basket');
+        $quantities = $request->request->get('quantity', []); 
+        foreach ($quantities as $id => $quantity) {
+            
+            $basket->updateQuantity($id, $quantity);
+        }
         
         return array(
-            'basket' => $this->get('basket'),
-            //'form' => $form->createView(),
+            'basket' => $basket
         );
     }
 

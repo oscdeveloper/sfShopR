@@ -47,6 +47,21 @@ class Basket
 
         return $this;
     }
+    
+    // TODO: przemyśleć czy nie przekazywać produktu zamiast $id
+    // TODO: usuwać dla quantity = 0
+    public function updateQuantity($id, $quantity)
+    {
+        $products = $this->getProducts();
+        
+        // aktualizujemy ilość produktów w koszyku
+        $products[$id]['quantity'] = $quantity;
+        
+        // zapisujemy dane do sesji
+        $this->session->set('basket', $products);
+
+        return $this;
+    }
 
     public function remove(Product $product)
     {
