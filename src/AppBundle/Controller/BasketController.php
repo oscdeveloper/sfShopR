@@ -18,33 +18,38 @@ class BasketController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $products = $this->get('basket')->getProducts();
-//
-//        $form = $this->createForm(new BasketForm());
-//        $form->handleRequest($request);
-//
-//        if ($form->isSubmitted() && $form->isValid()) {
-//
-//        }
+        $basket = $this->get('basket');
+        $quantities = $request->request->get('quantity', []); 
+        foreach ($quantities as $id => $quantity) {
+            
+            $basket->updateQuantity($id, $quantity);
+        }
         
         return array(
-            'basket' => $this->get('basket'),
-            //'form' => $form->createView(),
+            'basket' => $basket
         );
     }
 
     /**
      * @Route("/koszyk/{id}/dodaj", name="basket_add")
      */
-    public function addAction(Product $product = null)
+    public function addAction(Request $request, Product $product = null)
     {
         if (is_null($product)) {
-            $this->addFlash('notice', 'Produkt, który próbujesz dodać nie został znaleziony!');
-            return $this->redirectToRoute('products_list');
+            $this->addFlash('error', 'Produkt, który próbujesz dodać nie został znaleziony!');
+            return $this->redirect($request->headers->get('referer'));
         }
         
-        $basket = $this->get('basket');
-        $basket->add($product);
+        try {
+
+            $basket = $this->get('basket');
+            $basket->add($product);
+          
+        } catch (\Exception $e) {
+            
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirect($request->headers->get('referer'));
+        }
 
         $this->addFlash('notice', sprintf('Produkt "%s" został dodany do koszyka', $product->getName()));
 
