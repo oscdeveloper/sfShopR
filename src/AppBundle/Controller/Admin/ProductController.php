@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,26 +11,28 @@ use Pagerfanta\Pagerfanta;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\View\TwitterBootstrapView;
 
-use AppBundle\Entity\Comment;
-use AppBundle\Form\AdminCommentType as CommentType;
-use AppBundle\Form\CommentFilterType;
+use AppBundle\Entity\Product;
+use AppBundle\Form\ProductType;
+use AppBundle\Form\ProductFilterType;
 
 /**
- * Comment controller.
+ * Product controller.
  *
- * @Route("/admin/comment")
+ * @Route("/admin/product")
  */
-class CommentController extends Controller
+class ProductController extends Controller
 {
     /**
-     * Lists all Comment entities.
+     * Lists all Product entities.
      *
-     * @Route("/", name="admin_comment")
+     * @Route("/", name="product")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
+        $users = ["Arek", "Tomek", "Paweł"];
+        
         list($filterForm, $queryBuilder) = $this->filter();
 
         list($entities, $pagerHtml) = $this->paginator($queryBuilder);
@@ -50,13 +52,13 @@ class CommentController extends Controller
     {
         $request = $this->getRequest();
         $session = $request->getSession();
-        $filterForm = $this->createForm(new CommentFilterType());
+        $filterForm = $this->createForm(new ProductFilterType());
         $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->getRepository('AppBundle:Comment')->createQueryBuilder('e');
+        $queryBuilder = $em->getRepository('AppBundle:Product')->createQueryBuilder('e');
 
         // Reset filter
         if ($request->get('filter_action') == 'reset') {
-            $session->remove('CommentControllerFilter');
+            $session->remove('ProductControllerFilter');
         }
 
         // Filter action
@@ -69,13 +71,13 @@ class CommentController extends Controller
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
                 // Save filter to session
                 $filterData = $filterForm->getData();
-                $session->set('CommentControllerFilter', $filterData);
+                $session->set('ProductControllerFilter', $filterData);
             }
         } else {
             // Get filter from session
-            if ($session->has('CommentControllerFilter')) {
-                $filterData = $session->get('CommentControllerFilter');
-                $filterForm = $this->createForm(new CommentFilterType(), $filterData);
+            if ($session->has('ProductControllerFilter')) {
+                $filterData = $session->get('ProductControllerFilter');
+                $filterForm = $this->createForm(new ProductFilterType(), $filterData);
                 $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($filterForm, $queryBuilder);
             }
         }
@@ -100,7 +102,7 @@ class CommentController extends Controller
         $me = $this;
         $routeGenerator = function($page) use ($me)
         {
-            return $me->generateUrl('admin_comment', array('page' => $page));
+            return $me->generateUrl('product', array('page' => $page));
         };
 
         // Paginator - view
@@ -116,25 +118,25 @@ class CommentController extends Controller
     }
 
     /**
-     * Creates a new Comment entity.
+     * Creates a new Product entity.
      *
-     * @Route("/", name="admin_comment_create")
+     * @Route("/", name="product_create")
      * @Method("POST")
-     * @Template("AppBundle:Comment:new.html.twig")
+     * @Template("AppBundle:Product:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity  = new Comment();
-        $form = $this->createForm(new CommentType(), $entity);
+        $entity  = new Product();
+        $form = $this->createForm(new ProductType(), $entity);
         $form->bind($request);
-
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'flash.create.success');
 
-            return $this->redirect($this->generateUrl('admin_comment_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('product_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -144,16 +146,16 @@ class CommentController extends Controller
     }
 
     /**
-     * Displays a form to create a new Comment entity.
+     * Displays a form to create a new Product entity.
      *
-     * @Route("/new", name="admin_comment_new")
+     * @Route("/new", name="product_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Comment();
-        $form   = $this->createForm(new CommentType(), $entity);
+        $entity = new Product();
+        $form   = $this->createForm(new ProductType(), $entity);
 
         return array(
             'entity' => $entity,
@@ -162,9 +164,9 @@ class CommentController extends Controller
     }
 
     /**
-     * Finds and displays a Comment entity.
+     * Finds and displays a Product entity.
      *
-     * @Route("/{id}", name="admin_comment_show")
+     * @Route("/{id}", name="product_show")
      * @Method("GET")
      * @Template()
      */
@@ -172,10 +174,10 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppBundle:Comment')->find($id);
+        $entity = $em->getRepository('AppBundle:Product')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+            throw $this->createNotFoundException('Unable to find Product entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -187,9 +189,9 @@ class CommentController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Comment entity.
+     * Displays a form to edit an existing Product entity.
      *
-     * @Route("/{id}/edit", name="admin_comment_edit")
+     * @Route("/{id}/edit", name="product_edit")
      * @Method("GET")
      * @Template()
      */
@@ -197,13 +199,13 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppBundle:Comment')->find($id);
+        $entity = $em->getRepository('AppBundle:Product')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+            throw $this->createNotFoundException('Unable to find Product entity.');
         }
 
-        $editForm = $this->createForm(new CommentType(), $entity);
+        $editForm = $this->createForm(new ProductType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
@@ -214,24 +216,24 @@ class CommentController extends Controller
     }
 
     /**
-     * Edits an existing Comment entity.
+     * Edits an existing Product entity.
      *
-     * @Route("/{id}", name="admin_comment_update")
+     * @Route("/{id}", name="product_update")
      * @Method("PUT")
-     * @Template("AppBundle:Comment:edit.html.twig")
+     * @Template("AppBundle:Product:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('AppBundle:Comment')->find($id);
+        $entity = $em->getRepository('AppBundle:Product')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Comment entity.');
+            throw $this->createNotFoundException('Unable to find Product entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new CommentType(), $entity);
+        $editForm = $this->createForm(new ProductType(), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
@@ -239,7 +241,7 @@ class CommentController extends Controller
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'flash.update.success');
 
-            return $this->redirect($this->generateUrl('admin_comment_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('product_edit', array('id' => $id)));
         } else {
             $this->get('session')->getFlashBag()->add('error', 'flash.update.error');
         }
@@ -252,9 +254,9 @@ class CommentController extends Controller
     }
 
     /**
-     * Deletes a Comment entity.
+     * Deletes a Product entity.
      *
-     * @Route("/{id}", name="admin_comment_delete")
+     * @Route("/{id}", name="product_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -264,10 +266,10 @@ class CommentController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Comment')->find($id);
+            $entity = $em->getRepository('AppBundle:Product')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Comment entity.');
+                throw $this->createNotFoundException('Unable to find Product entity.');
             }
 
             $em->remove($entity);
@@ -277,11 +279,11 @@ class CommentController extends Controller
             $this->get('session')->getFlashBag()->add('error', 'flash.delete.error');
         }
 
-        return $this->redirect($this->generateUrl('admin_comment'));
+        return $this->redirect($this->generateUrl('product'));
     }
 
     /**
-     * Creates a form to delete a Comment entity by id.
+     * Creates a form to delete a Product entity by id.
      *
      * @param mixed $id The entity id
      *
