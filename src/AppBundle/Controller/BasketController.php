@@ -18,9 +18,9 @@ class BasketController extends Controller
      */
     public function indexAction(Request $request)
     {
-//        $products = $this->get('basket')->getProducts();
-//
-//        $form = $this->createForm(new BasketForm());
+        $products = $this->get('basket')->getProducts();
+
+        $form = $this->createForm(new BasketForm($products));
 //        $form->handleRequest($request);
 //
 //        if ($form->isSubmitted() && $form->isValid()) {
@@ -29,7 +29,7 @@ class BasketController extends Controller
         
         return array(
             'basket' => $this->get('basket'),
-            //'form' => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
