@@ -54,18 +54,25 @@ class Comment
     private $nbVoteDown = 0;
     
     /**
-     * @var Product
-     * 
-     * @ORM\ManyToOne(targetEntity="Product", inversedBy="comments")
-     */
-    private $product;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="verified", type="boolean")
      */
     private $verified = false;
+    
+    /**
+     * @var Product
+     * 
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="comments")
+     */
+    private $product;
+    
+    /**
+     * @var User
+     * 
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     */
+    private $user;
 
     public function __construct()
     {
@@ -195,5 +202,28 @@ class Comment
     public function getVerified()
     {
         return $this->verified;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \AppBundle\Entity\Product $product
+     * @return Comment
+     */
+    public function setProduct(\AppBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \AppBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }
