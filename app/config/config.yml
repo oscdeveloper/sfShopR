@@ -85,7 +85,30 @@ fos_user:
     user_class: AppBundle\Entity\User
     
 easy_admin:
+    site_name: 'SuperHiperSklep'
     entities:
-        - AppBundle\Entity\Product
-        - AppBundle\Entity\Comment
-        - AppBundle\Entity\Category
+        Products:
+            label: 'Produkty'
+            class: AppBundle\Entity\Product
+            list:
+                title: "Produkty"
+        Comments:
+            label: 'Komentarze'
+            class: AppBundle\Entity\Comment
+            list:
+                title: "Komentarze"
+        Categories:
+            label: 'Kategorie'
+            class: AppBundle\Entity\Category
+            list:
+                title: "Kategorie"
+        Users:
+            label: 'Użytkownicy'
+            class: AppBundle\Entity\User
+            list:
+                title: "Użytkownicy"
+        Orders:
+            label: 'Zamówienia'
+            class: AppBundle\Entity\Orders
+            list:
+                title: "Zamówiena"

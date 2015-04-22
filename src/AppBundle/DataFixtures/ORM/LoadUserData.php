@@ -23,6 +23,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
         $user->setEmail($faker->email);
         $user->setPlainPassword('admin');
         $user->setEnabled(true);
+        $user->addRole('ROLE_ADMIN');
 
         $this->addReference('admin', $user);
         $manager->persist($user);
