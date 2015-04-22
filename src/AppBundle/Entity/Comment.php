@@ -4,12 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Comment
  *
  * @ORM\Table(name="comment")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CommentRepository")
  */
 class Comment
 {
@@ -74,9 +75,17 @@ class Comment
      */
     private $user;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="CommentVote", mappedBy="comment")
+     */
+    private $votes;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime("now");
+        $this->votes = new ArrayCollection();
     }
 
     /**
@@ -248,5 +257,38 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add votes
+     *
+     * @param \AppBundle\Entity\CommentVote $votes
+     * @return Comment
+     */
+    public function addVote(\AppBundle\Entity\CommentVote $votes)
+    {
+        $this->votes[] = $votes;
+
+        return $this;
+    }
+
+    /**
+     * Remove votes
+     *
+     * @param \AppBundle\Entity\CommentVote $votes
+     */
+    public function removeVote(\AppBundle\Entity\CommentVote $votes)
+    {
+        $this->votes->removeElement($votes);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }

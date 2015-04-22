@@ -28,7 +28,7 @@ class ProductsController extends Controller
             8
         );
 
-        return $this->render('products/index.html.twig', [
+        return $this->render('Products/index.html.twig', [
             'products' => $pagination,
         ]);
     }
@@ -55,7 +55,7 @@ class ProductsController extends Controller
         
         // jeśli formularz został wysłane, a użytkownik nie jest zalogowany
         if ($form->isSubmitted() && !$user) {
-            $this->addFlash('error', "Aby móc dodawać komentarze musisz się wcześniej zalogować.");
+            $this->addFlash('danger', "Aby móc dodawać komentarze musisz się wcześniej zalogować.");
             return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
         }
         
@@ -77,15 +77,15 @@ class ProductsController extends Controller
             // jeśli użytkownik posiada uprawnienia admina
             if ($user->hasRole('ROLE_ADMIN')) {
             // if ($user->isAdmin()) {
-                $this->addFlash('notice', "Komentarz został pomyślnie zapisany i opublikowany");
+                $this->addFlash('success', "Komentarz został pomyślnie zapisany i opublikowany");
             } else {
-                $this->addFlash('notice', "Komentarz został pomyślnie zapisany i oczekuje na weryfikacje");
+                $this->addFlash('success', "Komentarz został pomyślnie zapisany i oczekuje na weryfikacje");
             }
             
             return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
         }
         
-        return $this->render('products/show.html.twig', [
+        return $this->render('Products/show.html.twig', [
             'product'   => $product,
             'form'      => $form->createView()
         ]);
@@ -96,37 +96,29 @@ class ProductsController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $query = $request->query->get('query');
+        $data = $request->query->get('query');
+        $pagination = null;
         
-        // validacja wartości przekazanej w parametrze
-//        $constraint = new NotBlank();
-//        $errors = $this->get('validator')->validate($query, $constraint);
-        
-        // alternatywny sposób zapisu zapytania
-//        $products = $this->getDoctrine()
-//            ->getManager()
-//            ->createQueryBuilder()
-//            ->from('AppBundle:Product', 'p')
-//            ->select('p')
-//            ->where('p.name LIKE :query')
-//            ->setParameter('query', '%'.$query.'%')
-//            ->getQuery()
-//            ->getResult();
-        
-        $products = $this->getDoctrine()
-            ->getRepository('AppBundle:Product')
-            ->createQueryBuilder('p')
-            ->select('p')
-            ->where('p.name LIKE :query')
-            ->orWhere('p.description LIKE :query')
-            ->setParameter('query', '%'.$query.'%')
-            ->getQuery()
-            ->getResult();
-        
-        return $this->render('products/search.html.twig', [
-            'query'     => $query,
-            'products'  => $products
+        if ($data == '') {
+            $this->addFlash('danger', 'Aby wyszukać produkty, musisz wpisać jakąś frazę');
+        } else {
+            $getProductsQuery = $this->getDoctrine()
+                ->getRepository('AppBundle:Product')
+                ->searchProductsQuery($data);
+
+            $paginator = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                $getProductsQuery,
+                $request->query->get('page', 1),
+                8
+            );
+        }
+
+        return $this->render('Products/search.html.twig', [
+            'products' => $pagination,
+            'query' => $data,
         ]);
+
     }
 
 }

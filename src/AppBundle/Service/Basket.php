@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class Basket
 {
-
     private $session;
 
     public function __construct(Session $session)

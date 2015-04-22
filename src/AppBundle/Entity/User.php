@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -29,10 +30,27 @@ class User extends BaseUser
      */
     protected $comments;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Orders", mappedBy="createdBy")
+     */
+    protected $orders;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="CommentVote", mappedBy="user")
+     */
+    protected $votes;
+
     public function __construct()
     {
         parent::__construct();
-        // your own logic
+
+        $this->comments = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     /**
@@ -76,5 +94,71 @@ class User extends BaseUser
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add orders
+     *
+     * @param \AppBundle\Entity\Orders $orders
+     * @return User
+     */
+    public function addOrder(\AppBundle\Entity\Orders $orders)
+    {
+        $this->orders[] = $orders;
+
+        return $this;
+    }
+
+    /**
+     * Remove orders
+     *
+     * @param \AppBundle\Entity\Orders $orders
+     */
+    public function removeOrder(\AppBundle\Entity\Orders $orders)
+    {
+        $this->orders->removeElement($orders);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrders()
+    {
+        return $this->orders;
+    }
+
+    /**
+     * Add votes
+     *
+     * @param \AppBundle\Entity\CommentVote $votes
+     * @return User
+     */
+    public function addVote(\AppBundle\Entity\CommentVote $votes)
+    {
+        $this->votes[] = $votes;
+
+        return $this;
+    }
+
+    /**
+     * Remove votes
+     *
+     * @param \AppBundle\Entity\CommentVote $votes
+     */
+    public function removeVote(\AppBundle\Entity\CommentVote $votes)
+    {
+        $this->votes->removeElement($votes);
+    }
+
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 }
