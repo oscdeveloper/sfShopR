@@ -10,7 +10,7 @@
 {% block body %}
     <div class="row">
         <div class="col-md-5 col-md-offset-4">
-            <h2 class="form-signin-heading">Rejestracja</h2>
+            <h2>Rejestracja</h2>
             
             {% for type, messages in app.session.flashbag.all() %}
                 {% for message in messages %}
@@ -32,7 +32,17 @@
             </form>
         </div>
     </div>
-
+            
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <h4>Social</h4>
+            {% for owner in hwi_oauth_resource_owners() %}
+                <a href="{{ hwi_oauth_login_url(owner) }}">
+                    <img src="{{ asset('images/' ~ owner ~ '.png') }}" alt="{{ owner }}" width="250">
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}
 

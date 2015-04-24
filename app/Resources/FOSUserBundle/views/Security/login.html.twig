@@ -50,6 +50,16 @@
             </form>
         </div>
     </div>
-
+            
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <h4>Social</h4>
+            {% for owner in hwi_oauth_resource_owners() %}
+                <a href="{{ hwi_oauth_login_url(owner) }}">
+                    <img src="{{ asset('images/' ~ owner ~ '.png') }}" alt="{{ owner }}" width="250">
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

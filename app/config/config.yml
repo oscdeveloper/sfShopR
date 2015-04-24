@@ -84,6 +84,23 @@ fos_user:
     firewall_name: main
     user_class: AppBundle\Entity\User
     
+hwi_oauth:
+   connect:
+        account_connector: app.user.provider
+   firewall_name: main
+   fosub:
+       username_iterations: 30
+       properties:
+           facebook: facebookId
+   resource_owners:       
+       facebook:
+           type: facebook
+           client_id: %facebook.client.id%
+           client_secret: %facebook.client.secret%
+           scope:         "email"
+           options:
+               display: popup   
+    
 easy_admin:
     site_name: 'SuperHiperSklep'
     entities:
