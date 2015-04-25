@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\CommentVote;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CommentsController extends Controller
 {
@@ -52,7 +53,7 @@ class CommentsController extends Controller
     /**
      * @Route("/komentarze/glosuj-up/{id}/{productId}", name="comment_vote_up")
      */
-    public function voteUpAction(Comment $comment, $productId)
+    public function voteUpAction(Comment $comment, $productId, Request $request)
     {
         $commentVote = $this->getDoctrine()
             ->getRepository('AppBundle:CommentVote')
@@ -61,7 +62,18 @@ class CommentsController extends Controller
                 'comment' => $comment,
             ]);
         if ($commentVote) {
-            $this->addFlash('danger', 'Możesz zagłosować na komentarz tylko raz');
+        	
+        	if ( $request->isXmlHttpRequest() ) {
+            
+        		return new JsonResponse([
+        			'success' => false,
+        			'message' => 'Możesz zagłosować tylko raz.'
+        		]);
+        		
+        	}
+
+        	$this->addFlash('danger', 'Możesz zagłosować na komentarz tylko raz');
+        	
         } else {
             $em = $this->getDoctrine()->getManager();
 
@@ -78,16 +90,27 @@ class CommentsController extends Controller
 
             $em->flush();
         }
-
-        return $this->redirectToRoute('product_show', [
+        
+        if ( $request->isXmlHttpRequest() ) {
+        
+        	return new JsonResponse([
+        			'success' => true,
+        			'nbVotes' => $comment->getNbVoteUp()
+        	]);
+        
+        }        
+        
+        return $this->redirect($request->headers->get('referer'));
+        
+        /*return $this->redirectToRoute('product_show', [
             'id' => $productId,
-        ]);
+        ]);*/
     }
 
     /**
      * @Route("/komentarze/glosuj-down/{id}/{productId}", name="comment_vote_down")
      */
-    public function voteDownAction(Comment $comment, $productId)
+    public function voteDownAction(Comment $comment, $productId, Request $request)
     {
         $commentVote = $this->getDoctrine()
             ->getRepository('AppBundle:CommentVote')
@@ -96,7 +119,18 @@ class CommentsController extends Controller
                 'comment' => $comment,
             ]);
         if ($commentVote) {
-            $this->addFlash('danger', 'Możesz zagłosować na komentarz tylko raz');
+        	
+        	if ( $request->isXmlHttpRequest() ) {
+        	
+        		return new JsonResponse([
+        				'success' => false,
+        				'message' => 'Możesz zagłosować tylko raz.'
+        		]);
+        	
+        	}
+        	
+	        $this->addFlash('danger', 'Możesz zagłosować na komentarz tylko raz');
+        	
         } else {
             $em = $this->getDoctrine()->getManager();
 
@@ -114,8 +148,19 @@ class CommentsController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('product_show', [
+        if ( $request->isXmlHttpRequest() ) {
+        
+        	return new JsonResponse([
+        			'success' => true,
+        			'nbVotes' => $comment->getNbVoteDown()
+        	]);
+        
+        }        
+        
+        return $this->redirect($request->headers->get('referer'));
+        
+        /*return $this->redirectToRoute('product_show', [
             'id' => $productId,
-        ]);
+        ]);*/
     }
 }
