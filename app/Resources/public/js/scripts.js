@@ -26,7 +26,7 @@ $().ready(function () {
                 if (response.success) {
                     $link.prev().html(response.nbVotes);
                 } else {
-                    alert(response.message);
+                    bootbox.alert(response.message);
                 }
             }
         );
