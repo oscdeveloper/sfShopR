@@ -99,7 +99,17 @@ hwi_oauth:
            client_secret: %facebook.client.secret%
            scope:         "email"
            options:
-               display: popup   
+               display: popup
+               
+vich_uploader:
+    db_driver: orm
+    mappings:
+        product_image:
+            uri_prefix:         images/products
+            upload_destination: %kernel.root_dir%/../web/images/products
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
     
 easy_admin:
     site_name: 'SuperHiperSklep'
@@ -109,6 +119,15 @@ easy_admin:
             class: AppBundle\Entity\Product
             list:
                 title: "Produkty"
+            form:
+                fields:
+                    #- 'imageFile'
+                    - { property: 'imageFile', type: 'file', label: 'Plik' }
+                    - 'name'
+                    - 'description'
+                    - 'price'
+                    - 'amount'
+                    - 'category'
         Comments:
             label: 'Komentarze'
             class: AppBundle\Entity\Comment
