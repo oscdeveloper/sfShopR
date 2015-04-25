@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

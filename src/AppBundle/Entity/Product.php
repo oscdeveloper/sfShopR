@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product
@@ -34,6 +35,12 @@ class Product
      * @Assert\Length(min=5, minMessage="Tytuł musi mieć conajmniej {{ limit }} znaków.")
      */
     private $name;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=255, unique=true)
+     */
+    private $slug;
 
     /**
      * @var string
@@ -86,14 +93,14 @@ class Product
     private $imageFile;
 
     /**
-     * @ORM\Column(name="image_name", type="string", length=255)
+     * @ORM\Column(name="image_name", type="string", length=255, nullable=true)
      *
      * @var string $imageName
      */
     private $imageName;
 
     /**
-     * @ORM\Column(name="updatet_at", type="datetime")
+     * @ORM\Column(name="updatet_at", type="datetime", nullable=true)
      *
      * @var \DateTime $updatedAt
      */
@@ -112,6 +119,11 @@ class Product
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
