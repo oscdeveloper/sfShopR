@@ -1,18 +1,20 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 $().ready(function () {
 
-    console.log('Document ready!');
+    bootbox.setDefaults({
+        locale: "pl",
+    });
 
+    
     // dodaje confirm dla linków usuwajacych produkty z koszyka
-    $('table a.remove').click(function () {
-
-        return confirm("Czy napewno chcesz usunąć ten produkt?");
+    $('table a.remove').on('click', function(event) {
+        
+        var url = $(this).attr('href');
+        event.preventDefault();
+        bootbox.confirm("Czy napewno chcesz usunąć ten produkt?", function(result) {
+            if (result) {
+                window.location = url;
+            }
+        });
     });
 
     $('a.vote-up, a.vote-down').click(function () {
