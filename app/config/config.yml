@@ -121,13 +121,12 @@ easy_admin:
                 title: "Produkty"
             form:
                 fields:
-                    #- 'imageFile'
+                    - 'category'
                     - { property: 'imageFile', type: 'file', label: 'Plik' }
                     - 'name'
                     - 'description'
                     - 'price'
-                    - 'amount'
-                    - 'category'
+                    - 'amount'                    
         Comments:
             label: 'Komentarze'
             class: AppBundle\Entity\Comment
