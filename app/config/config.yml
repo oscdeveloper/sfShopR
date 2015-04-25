@@ -154,3 +154,19 @@ stof_doctrine_extensions:
         default:
             sluggable: true
             timestampable: true
+            
+liip_imagine:
+    resolvers:
+       default:
+          web_path: ~
+
+    filter_sets:
+        cache: ~
+        product_image_thumb:
+            quality: 75
+            filters:
+                thumbnail: { size: [240, 200], mode: outbound }
+        product_image:
+            quality: 75
+            filters:
+                thumbnail: { size: [400, 300], mode: outbound }

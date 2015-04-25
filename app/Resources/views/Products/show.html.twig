@@ -6,7 +6,13 @@
 
     <div class="row">
         <div class="col-md-3">
-            <img src="http://placehold.it/240x200" alt="" class="img-thumbnail">
+            {% if product.imageName %}
+                <a class="example-image-link" data-lightbox="product-image" href="{{ asset('images/products/' ~ product.imageName) }}">
+                    <img src="{{ vich_uploader_asset(product, 'product_image') | imagine_filter('product_image') }}" alt="" class="img-thumbnail">
+                </a>
+            {% else %}
+                <img src="http://placehold.it/240x200" alt="" class="img-thumbnail">
+            {% endif %}
         </div>
         
         <div class="col-md-9">
