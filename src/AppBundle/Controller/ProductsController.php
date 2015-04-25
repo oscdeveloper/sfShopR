@@ -56,7 +56,7 @@ class ProductsController extends Controller
         // jeśli formularz został wysłane, a użytkownik nie jest zalogowany
         if ($form->isSubmitted() && !$user) {
             $this->addFlash('danger', "Aby móc dodawać komentarze musisz się wcześniej zalogować.");
-            return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
+            return $this->redirectToRoute('product_show', ['slug' => $product->getSlug()]);
         }
         
         // jeśli formularz został wysłane i wszystkie wprowadzone dane sa poprawne
@@ -82,7 +82,7 @@ class ProductsController extends Controller
                 $this->addFlash('success', "Komentarz został pomyślnie zapisany i oczekuje na weryfikacje");
             }
             
-            return $this->redirectToRoute('product_show', ['id' => $product->getId()]);
+            return $this->redirectToRoute('product_show', ['slug' => $product->getSlug()]);
         }
         
         return $this->render('Products/show.html.twig', [

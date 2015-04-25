@@ -100,7 +100,16 @@ class Product
     private $imageName;
 
     /**
-     * @ORM\Column(name="updatet_at", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="created_at", type="datetime")
+     *
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="updated_at", type="datetime")
      *
      * @var \DateTime $updatedAt
      */
@@ -317,15 +326,13 @@ class Product
         return $this->imageName;
     }
 
-    public function setUpdatedAt($date)
-    {
-        $this->updatedAt = $date;
-
-        return $this;
-    }
-
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }
