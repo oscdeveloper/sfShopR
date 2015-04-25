@@ -16,9 +16,9 @@ $(function(){
 		$.getJSON(
 			url,
 			function(response){
-				console.log(response);
+				
 				if (response.success) {
-					
+					$link.prev().html(response.nbVotes);
 				} else {
 					alert(response.message);
 				}
