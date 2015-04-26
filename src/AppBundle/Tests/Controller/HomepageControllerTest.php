@@ -13,6 +13,9 @@ class HomepageControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertTrue($crawler->filter('html:contains("Ostatnio dodane produkty")')->count() > 0);
+    
+        $this->assertEquals(12, $crawler->filter('div.product-item')->count());
+        
     }
 
 }

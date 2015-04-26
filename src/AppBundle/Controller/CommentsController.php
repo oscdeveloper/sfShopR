@@ -10,12 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-<<<<<<< HEAD
-=======
-use AppBundle\Entity\Comment;
-use AppBundle\Entity\CommentVote;
-use Symfony\Component\HttpFoundation\JsonResponse;
-
 
 class CommentsController extends Controller
 {

@@ -68,6 +68,20 @@ class ProductControllerTest extends WebTestCase
         $this->assertEquals(1, $crawler->filter('h1:contains("Koszyk")')->count());
         // 1 element w koszyku
         $this->assertEquals(1, $crawler->filter('table.table tbody>tr')->count());
+        
+        $link = $crawler
+            // wybieramy link
+            ->selectLink('Wyczyść Koszyk')
+            ->link()
+        ;
+        
+        $crawler = $client->click($link);
+
+        // jedna h1: Koszyk
+        $this->assertEquals(0, $crawler->filter('h1:contains("Koszyk")')->count());
+        // 1 element w koszyku
+        $this->assertEquals(0, $crawler->filter('table.table tbody>tr')->count());        
+        
     }
     
 }

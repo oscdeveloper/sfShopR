@@ -19,7 +19,7 @@ class CommentType extends AbstractType
                 'label' => "Treść komentarza",
                 'attr'  => array(
                     'class' => 'form-control', 
-                    'placeholder' => "Wprowadź treść komentarza"
+                    'placeholder' => "form.comment.placeholder"
                 )
             ))
         ;
