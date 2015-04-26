@@ -12,6 +12,7 @@ class HomepageController extends Controller
      */
     public function indexAction()
     {
+        // pobieramy listę ostatnio dodanych produktów
         $products = $this->getDoctrine()
             ->getRepository('AppBundle:Product')
             ->getLastAdded();
