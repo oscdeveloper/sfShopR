@@ -10,6 +10,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+<<<<<<< HEAD
+=======
+use AppBundle\Entity\Comment;
+use AppBundle\Entity\CommentVote;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+
 class CommentsController extends Controller
 {
     /**
@@ -63,6 +70,7 @@ class CommentsController extends Controller
 
         if ($commentVote) {
 
+
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse([
                     'success'   => false, 'message' => 'Możesz zagłosować na komentarz tylko raz'
@@ -70,6 +78,7 @@ class CommentsController extends Controller
             }
 
             $this->addFlash('danger', 'Możesz zagłosować na komentarz tylko raz');
+
 
         } else {
 
@@ -87,6 +96,7 @@ class CommentsController extends Controller
             $em->flush();
         }
         
+
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
                 'success'   => true, 'nbVotes'  => $comment->getNbVoteUp()
@@ -94,6 +104,7 @@ class CommentsController extends Controller
         }
 
         return $this->redirect($request->headers->get('referer'));
+
     }
 
     /**
@@ -116,6 +127,7 @@ class CommentsController extends Controller
             }
             
             $this->addFlash('danger', 'Możesz zagłosować na komentarz tylko raz');
+
         } else {
             $em = $this->getDoctrine()->getManager();
 
@@ -131,6 +143,7 @@ class CommentsController extends Controller
             $em->flush();
         }
 
+
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
                 'success'   => true, 'nbVotes'  => $comment->getNbVoteDown()
@@ -138,5 +151,6 @@ class CommentsController extends Controller
         }
 
         return $this->redirect($request->headers->get('referer'));
+
     }
 }
